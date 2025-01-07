@@ -6,6 +6,7 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 platform :ios, min_ios_version_supported
+use_modular_headers!
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -16,6 +17,13 @@ end
 
 target 'AdiTodo' do
   config = use_native_modules!
+
+  # pod 'Firebase/Auth', :modular_headers => true
+  # pod 'Firebase/Core', :modular_headers => true
+  # pod 'Firebase/Analytics', :modular_headers => true
+
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],

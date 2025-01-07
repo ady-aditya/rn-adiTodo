@@ -5,114 +5,127 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { APP_BACKGROUND_COLOR, KEY_LOGGED_IN_USER, ORANGE_DARK, TEAL_DARK, TEAL_MEDIUM } from './src/utils/AppConstants';
+import { TodoUser } from './src/types/UserTypes';
+import PlainButton from './src/components/ui/PlainButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import GoogleSignIn from './src/components/GoogleSignIn';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './src/screens/HomeScreen';
+import PreviousDays from './src/screens/PreviousDays';
+import Icon from 'react-native-vector-icons/Ionicons';
+import IconFA from 'react-native-vector-icons/FontAwesome';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
+import { loadTodos } from './src/redux/todoSlice';
+import { firebase } from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {FIREBASEAPP_ID, FIREBASE_PROJECT_ID,GOOGLE_SIGNIN_WEBCLIENT_ID } from "@env";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Tab = createBottomTabNavigator();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+firebase.initializeApp({
+  appId:FIREBASEAPP_ID,
+  projectId:FIREBASE_PROJECT_ID
+})
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+if(!firebase.app.length){
+  firebase.initializeApp({
+      appId:FIREBASEAPP_ID,
+      projectId:FIREBASE_PROJECT_ID
+  })
 }
 
+GoogleSignin.configure({
+  webClientId:GOOGLE_SIGNIN_WEBCLIENT_ID
+});
+
+
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const [loggedInUser, setLoggedinUser] = useState<TodoUser>();
+  const [doneCheckingLoggin, setDoneCheckingLoggin] = useState(false);
 
+  useEffect(()=>{
+
+    checkUserInStorage();
+
+    async function checkUserInStorage(){
+      const user = await AsyncStorage.getItem(KEY_LOGGED_IN_USER);
+      setDoneCheckingLoggin(true);
+      if(user){
+        setLoggedinUser(JSON.parse(user));
+      }
+    }
+    
+  },[]);
+
+  const displayAppNavigation = doneCheckingLoggin && loggedInUser;
+  
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    <>
+      {displayAppNavigation && 
+        <AppNavigation/>
+      }
+      {
+        !displayAppNavigation &&
+        <SafeAreaView style={styles.root}>
+          <Image source={require('./assests/images/aditodologo.jpeg')} style={{height:500, width:500}}/>
+          {doneCheckingLoggin && !loggedInUser &&
+            <GoogleSignIn setUser={setLoggedinUser} />
+          }
+        </SafeAreaView>
+      }
+
+    </>
+
+    
+  )
+}
+
+function AppNavigation(){
+  useEffect(()=>{
+    store.dispatch(loadTodos())
+  },[]);
+  return (
+    <Provider store={store}>
+        <NavigationContainer>
+            <Tab.Navigator screenOptions={
+              {
+                headerShown:false
+              }
+              
+            }>
+              <Tab.Screen name='Home' component={HomeScreen} 
+                options={{
+                  tabBarIcon : (props)=> <Icon name="home" size={15} color={props.focused ? TEAL_MEDIUM : "black"}/> ,
+                  tabBarActiveTintColor : TEAL_MEDIUM
+                }} 
+              />
+              <Tab.Screen name='Previous' component={PreviousDays}
+                options={{
+                  tabBarIcon : (props)=> <IconFA name="tasks" size={15} color={props.focused ? TEAL_MEDIUM : "black"}/> ,
+                  tabBarActiveTintColor : TEAL_MEDIUM
+                }} 
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
+    </Provider>
+      
+  )
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  root:{
+    flex:1,
+    backgroundColor:APP_BACKGROUND_COLOR,
+    justifyContent:"center",
+    alignItems:"center"
+}
 });
 
 export default App;
