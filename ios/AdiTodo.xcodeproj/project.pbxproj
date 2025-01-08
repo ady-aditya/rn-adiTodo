@@ -19,7 +19,6 @@
 		E61A49832D1ACA31001727A0 /* Dummy2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61A49822D1ACA31001727A0 /* Dummy2.swift */; };
 		E632C32E2D1AACF100CD5D57 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E632C32D2D1AACF100CD5D57 /* GoogleService-Info.plist */; };
 		E6CB17AF2D1E680C00E5714A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6CB17AE2D1E680C00E5714A /* GoogleService-Info.plist */; };
-		E6CB17B12D1E6BEE00E5714A /* GoogleService-Info 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6CB17B02D1E6BEE00E5714A /* GoogleService-Info 2.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +54,6 @@
 		E61A49822D1ACA31001727A0 /* Dummy2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy2.swift; sourceTree = "<group>"; };
 		E632C32D2D1AACF100CD5D57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E6CB17AE2D1E680C00E5714A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E6CB17B02D1E6BEE00E5714A /* GoogleService-Info 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info 2.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -99,7 +97,6 @@
 		13B07FAE1A68108700A75B9A /* AdiTodo */ = {
 			isa = PBXGroup;
 			children = (
-				E6CB17B02D1E6BEE00E5714A /* GoogleService-Info 2.plist */,
 				E61A497F2D1AC9F5001727A0 /* Dummy.swift */,
 				E632C32D2D1AACF100CD5D57 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -263,7 +260,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				E6CB17B12D1E6BEE00E5714A /* GoogleService-Info 2.plist in Resources */,
 				E632C32E2D1AACF100CD5D57 /* GoogleService-Info.plist in Resources */,
 				E6CB17AF2D1E680C00E5714A /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
