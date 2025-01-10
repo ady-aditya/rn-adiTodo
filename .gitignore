@@ -81,3 +81,5 @@ yarn-error.log
 
 .env
 set-env-ios.sh
+
+gradle.properties
