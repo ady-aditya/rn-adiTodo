@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
         padding:15,
         alignSelf:"stretch",
         borderRadius:40,
+        marginHorizontal:20
        
     },
     text:{
