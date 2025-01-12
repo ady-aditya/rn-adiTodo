@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KEY_LOGGED_IN_USER } from "../utils/AppConstants";
 import { Alert } from "react-native";
 import { Dispatch, SetStateAction } from "react";
+import { saveDummyTodoStartingYesterDay } from "../dataService/TodoData";
 
 type GoogleSignInProps={
     setUser: Dispatch<SetStateAction<TodoUser | undefined>>
@@ -13,8 +14,6 @@ type GoogleSignInProps={
 
 
 export default function GoogleSignIn({setUser}:GoogleSignInProps){
-
-    console.log("---",auth().currentUser);
 
     async function googleSignin() {
         try{
@@ -25,10 +24,10 @@ export default function GoogleSignIn({setUser}:GoogleSignInProps){
             if (!idToken) {
                 throw new Error('No ID token found');
             }
-            console.log("---!!",auth().currentUser);
+            
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             await auth().signInWithCredential(googleCredential);
-            console.log("---@@",auth().currentUser);
+            
             
             if(data?.idToken){
                 const userName = auth().currentUser?.displayName;
@@ -39,6 +38,7 @@ export default function GoogleSignIn({setUser}:GoogleSignInProps){
                         email:email
                     }
                     AsyncStorage.setItem(KEY_LOGGED_IN_USER, JSON.stringify(todoUser));
+                    saveDummyTodoStartingYesterDay();
                     setUser(todoUser);
                 }else{
                     Alert.alert("Something went wrong.","Please try again")
@@ -47,7 +47,7 @@ export default function GoogleSignIn({setUser}:GoogleSignInProps){
             
         }catch(error){
             console.error(error);
-            Alert.alert("Something went wrong.","Please try again")
+            Alert.alert("Something went wrong.","Please try again"+error)
         }
     }
 

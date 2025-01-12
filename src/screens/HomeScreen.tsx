@@ -30,6 +30,8 @@ export default function HomeScreen(){
     if(todayYesterdayTodos.yesterday && todayYesterdayTodos.yesterday.todos && todayYesterdayTodos.yesterday.todos.length > 0 && todayYesterdayTodos.yesterday.todos.every((todo)=>todo.completed) ){
         yesterdayDone = true;
     }
+
+    const yesterdayIndex = todayYesterdayTodos.today === undefined ? 0 : 1
     
     function saveTextTodo(){
         if(textTodo === ""){
@@ -76,7 +78,7 @@ export default function HomeScreen(){
                         }
                         {todayYesterdayTodos.yesterday != undefined && todayYesterdayTodos.yesterday.todos.length > 0 && 
                             todayYesterdayTodos.yesterday.todos.map((todo,index)=>
-                                <EditbleTaskItem dayIndex={1} key={index+Math.random()} taskIndex={index} taskTitle={todo.title} taskCompleted={todo.completed}/>
+                                <EditbleTaskItem dayIndex={yesterdayIndex} key={index+Math.random()} taskIndex={index} taskTitle={todo.title} taskCompleted={todo.completed}/>
                             )
                         }
                     </View>
