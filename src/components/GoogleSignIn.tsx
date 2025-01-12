@@ -47,7 +47,7 @@ export default function GoogleSignIn({setUser}:GoogleSignInProps){
             
         }catch(error){
             console.error(error);
-            Alert.alert("Something went wrong.","Please try again")
+            Alert.alert("Something went wrong.","Please try again"+error)
         }
     }
 

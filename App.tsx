@@ -94,12 +94,19 @@ function AppNavigation(){
   return (
     <Provider store={store}>
         <NavigationContainer>
-            <Tab.Navigator screenOptions={
+            <Tab.Navigator
+
+            
+              
+              screenOptions={
               {
-                headerShown:false
+                headerShown:false,
+                
               }
               
-            }>
+            }
+            
+            >
               <Tab.Screen name='Home' component={HomeScreen} 
                 options={{
                   tabBarIcon : (props)=> <Icon name="home" size={15} color={props.focused ? TEAL_MEDIUM : "black"}/> ,
